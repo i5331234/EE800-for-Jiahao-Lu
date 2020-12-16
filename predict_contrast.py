@@ -24,7 +24,6 @@ args = parser.parse_args()
 
 
 def main(args):
-    # 減少显存占用
     config = tensorflow.ConfigProto()
     config.gpu_options.allow_growth = True
     _ = tensorflow.Session(config=config)
@@ -50,14 +49,12 @@ def main(args):
     print('==> successfully loading model {}.'.format(args.resume))
 
     start = time.time()
-    # 获取第一个语音特征
     specs1 = utils.load_data(args.audio1_path, win_length=params['win_length'], sr=params['sampling_rate'],
                              hop_length=params['hop_length'], n_fft=params['nfft'],
                              spec_len=params['spec_len'], mode='eval')
     specs1 = np.expand_dims(np.expand_dims(specs1, 0), -1)
     feature1 = network_eval.predict(specs1)[0]
 
-    # 获取第二个语音特征
     specs2 = utils.load_data(args.audio2_path, win_length=params['win_length'], sr=params['sampling_rate'],
                              hop_length=params['hop_length'], n_fft=params['nfft'],
                              spec_len=params['spec_len'], mode='eval')
