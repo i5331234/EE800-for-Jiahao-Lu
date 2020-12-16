@@ -26,7 +26,6 @@ args = parser.parse_args()
 person_feature = []
 person_name = []
 
-# 減少显存占用
 config = tensorflow.ConfigProto()
 config.gpu_options.allow_growth = True
 _ = tensorflow.Session(config=config)
@@ -52,7 +51,6 @@ network_eval.load_weights(os.path.join(args.resume), by_name=True)
 print('==> successfully loading model {}.'.format(args.resume))
 
 
-# 预测获取声纹特征
 def predict(audio_path):
     specs = utils.load_data(audio_path, win_length=params['win_length'], sr=params['sampling_rate'],
                              hop_length=params['hop_length'], n_fft=params['nfft'],
@@ -62,7 +60,6 @@ def predict(audio_path):
     return feature
 
 
-# 加载要识别的音频库
 def load_audio_db(audio_db_path):
     start = time.time()
     audios = os.listdir(audio_db_path)
@@ -77,13 +74,11 @@ def load_audio_db(audio_db_path):
     print('Loading of audio library completed, time consuming：%fms' % (round((end - start) * 1000)))
 
 
-# 识别声纹
 def recognition(path):
     name = ''
     pro = 0
     feature = predict(path)
     for i, person_f in enumerate(person_feature):
-        # 计算相识度
         dist = np.dot(feature, person_f.T)
         if dist > pro:
             pro = dist
