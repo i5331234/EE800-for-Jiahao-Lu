@@ -19,7 +19,6 @@ class AudioData(object):
             self.label[key] = [int(c) for c in label.decode().replace('\n', '').split(',')]
         print('finish loading data:', len(self.label))
 
-    # 获取图像数据
     def get_data(self, key):
         p = self.offset_dict.get(key, None)
         if p is None:
@@ -27,11 +26,9 @@ class AudioData(object):
         val_pos, val_len = p
         return self.m[val_pos:val_pos + val_len]
 
-    # 获取图像标签
     def get_label(self, key):
         return self.label.get(key)
-
-    # 获取所有keys
+    
     def get_keys(self):
         return self.label.keys()
 
